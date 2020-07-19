@@ -1,0 +1,55 @@
+version: '2'
+
+services:
+  # Dient als Base-Service
+  client:
+    image: node:12
+    volumes:
+      - ./client:/home/node/app:delegated
+      - client_nodemodules:/home/node/app/node_modules
+    working_dir: /home/node/app
+
+  # Installiert node_modules des clients
+  # Nutze mit: 'make client-install'
+  client-install:
+    extends:
+      service: client
+    command: npm i
+
+  # Korrigiert node_module vulnerabilities mit 'npm audit fix'
+  # Nutze mit: 'make client-install-fix'
+  client-install-fix:
+    extends:
+      service: client
+    command: npm audit fix
+
+  # Dient als Base-Service
+  server:
+    image: node:12
+    volumes:
+      - ./server:/home/node/app:delegated
+      - server_nodemodules:/home/node/app/node_modules
+    working_dir: /home/node/app
+  
+  # Installiert node_modules des serers
+  # Nutze mit: 'make serers-install'
+  server-install:
+    extends:
+      service: server
+    command: npm i
+  
+  # Korrigiert node_module vulnerabilities mit 'npm audit fix'
+  # Nutze mit: 'make server-install-fix'
+  server-install-fix:
+    extends:
+      service: server
+    command: npm audit fix
+
+# Wir speichern node_modules in diesen externen Docker-Volumes
+# Diese werden im docker-compose.yml von den entsprechenden Services genutzt
+# Dieses Setup erlaubt uns Module zu installieren/löschen ohne unsere Docker-Images neu zu bauen
+volumes:
+  client_nodemodules:
+    external: true
+  server_nodemodules:
+    external: true

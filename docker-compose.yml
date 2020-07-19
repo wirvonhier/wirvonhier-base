@@ -1,0 +1,86 @@
+version: '2.4'
+# version 2.x allows you to use depends_on with conditions that cause
+# the node app to wait on mongo to respond to a healthy healthcheck before node is started
+# v3.x doesn't have this feature yet, and is only needed if you want to use Swarm
+
+services:
+  server:
+    image: node:12
+    working_dir: /home/node/app
+    command: ./node_modules/.bin/nodemon --inspect=0.0.0.0:9229 src/index.ts
+    ports:
+      - "9229:9229"
+    volumes:
+      - ./server:/home/node/app:delegated
+      - server_nodemodules:/home/node/app/node_modules
+    env_file: ./server/.env
+    depends_on:
+      mongo:
+        condition: service_healthy
+    healthcheck:
+      disable: true
+
+  client:
+    image: node:12
+    working_dir: /home/node/app
+    command: npm run dev
+    volumes:
+      - ./client:/home/node/app:delegated
+      - client_nodemodules:/home/node/app/node_modules
+    env_file: ./client/.env
+    environment:
+      - NODE_ENV=development
+
+  proxy:
+    image: nginx
+    restart: always
+    volumes:
+      - ./proxy/wirvonhier.dev.conf:/etc/nginx/conf.d/default.conf:ro
+    ports:
+      - 80:80
+      - 8080:80
+    depends_on:
+      - server
+      - client
+
+  mongo:
+    image: mongo:4.2.8
+    restart: always
+    ports:
+      - "27017:27017"
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=admin
+      - MONGO_INITDB_ROOT_PASSWORD=pass
+      - MONGO_INITDB_DATABASE=wirvonhier
+    volumes:
+      - ./mongo/mongo_volume:/data/db
+      - ./mongo/mongo-seed/mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
+    command: --quiet
+    # we need to check health here, so that docker-compose will wait for a healthy mongo before it starts node
+    healthcheck:
+      test: "[ `echo 'db.runCommand(\"ping\").ok' | mongo localhost/wirvonhier --quiet` ] && echo 0 || echo 1"
+      interval: 5s
+      start_period: 10s
+      timeout: 4s
+      retries: 3
+    logging:
+      driver: none
+
+  mongo-express:
+    image: mongo-express
+    restart: always
+    ports:
+      - 8081:8081
+    environment:
+      ME_CONFIG_MONGODB_ADMINUSERNAME: admin
+      ME_CONFIG_MONGODB_ADMINPASSWORD: pass
+    depends_on:
+      mongo:
+        condition: service_healthy
+
+volumes:
+  mongodbdata:
+  client_nodemodules:
+    external: true
+  server_nodemodules:
+    external: true

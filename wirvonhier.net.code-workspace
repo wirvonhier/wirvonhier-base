@@ -1,0 +1,30 @@
+// Diese File ist notwendig für die Konfiguration der VSC-Plugins:
+// ESLINT: automatischen Linting/Fixing von TypeScript beim speichern
+// STYLELINT: automatisches Linting/Fixing von CSS/SASS beim speichern
+{
+  "folders": [
+    {
+      "path": "."
+    },
+  ],
+  "settings": {
+    "css.validate": false,
+    "less.validate": false,
+    "scss.validate": false,
+    "eslint.validate": [
+      "javascript",
+      "javascriptreact",
+      "typescript",
+      "typescriptreact"
+    ],
+    // Make ESLint look for a package.json / .eslintrc in current workingDirectory 
+    "eslint.workingDirectories": [
+      { "mode": "auto" }
+    ],
+    "editor.formatOnSave": false,
+    "editor.codeActionsOnSave": {
+      "source.fixAll.eslint": true,
+      "source.fixAll.stylelint": true
+    }
+  }
+}

@@ -1,0 +1,31 @@
+{
+  // Use IntelliSense to learn about possible attributes.
+  // Hover to view descriptions of existing attributes.
+  // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+  "version": "0.2.0",
+  "configurations": [
+      {
+        "type": "chrome",
+        "request": "launch",
+        "name": "Client - chrome",
+        "url": "http://0.0.0.0",
+        "webRoot": "${workspaceFolder}/client/",
+        "breakOnLoad": true,
+        "sourceMapPathOverrides": {
+          "webpack:///./src/*": "${webRoot}/src/*",
+        },
+        "sourceMaps": true,
+        "internalConsoleOptions": "neverOpen"
+    },
+    {
+      "type": "node",
+      "request": "attach",
+      "name": "Server",
+      "port": 9229,
+      "address": "0.0.0.0",
+      "sourceMapPathOverrides": {
+        "/home/node/app/*": "${workspaceRoot}/server/*"
+      }
+    }
+  ]
+}
