@@ -10,17 +10,16 @@
 
 Clone this repository:
 
-`git clone https://github.com/wirvonhier/wirvonhier_setup wirvonhier.net && cd wirvonhier.net`
+`git clone https://github.com/wirvonhier/wirvonhier-base.git wirvonhier.net && cd wirvonhier.net`
 
 Create the project with:
 
-- Linux: `make wirvonhier`
-- MacOS: `make wirvonhier`
+- Linux / MacOS: `make wirvonhier`
 - Windows: `nmake -f Makefile.win`
 
 A `client/.env` and `server/.env` file with several environment variables is required. Please inquire us directly for details.
 
-You need a DB dump to seed the db. These JSON files need to be copied to `wirvonhier.net/mongo/mongo-seed/*.json`.
+You need a DB dump to seed the local DB.
 
 Finally, run `docker-compose up`
 
