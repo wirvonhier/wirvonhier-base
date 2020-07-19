@@ -1,0 +1,12 @@
+[submodule "server"]
+	path = server
+	url = https://github.com/wirvonhier/server.git
+[submodule "client"]
+	path = client
+	url = https://github.com/wirvonhier/client.git
+[submodule "proxy"]
+	path = proxy
+	url = https://github.com/wirvonhier/proxy.git
+[submodule "mongo"]
+	path = mongo
+	url = https://github.com/wirvonhier/mongo.git
