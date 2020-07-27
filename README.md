@@ -2,6 +2,7 @@
 
 ## Prerequisites
 
+- mkcert [Get mkcert](https://github.com/FiloSottile/mkcert)
 - GIT [Get GIT](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
 - Docker [Get Docker](https://docs.docker.com/get-docker/)
 - Docker-Compose [Get Docker Compose](https://docs.docker.com/compose/install/)
@@ -17,9 +18,13 @@ Create the project with:
 - Linux / MacOS: `make wirvonhier`
 - Windows: `nmake -f Makefile.win`
 
-A `client/.env` and `server/.env` file with several environment variables is required. Please inquire us directly for details.
+A `client/secrets` and `server/secrets` folder with several secret-files is required. Please inquire us directly for details.
 
 You need a DB dump to seed the local DB.
+
+You need to create the SSL-Certificate for `localhost`:
+
+`mkcert -install && mkcert -cert-file proxy/localcerts/localhost.pem -key-file proxy/localcerts/localhost-key.pem localhost`
 
 Finally, run `docker-compose up`
 
@@ -31,9 +36,11 @@ To start the app in development mode, run the following command:
 
 This starts all required services.
 
-Server: `0.0.0.0/server` (HealthCheck: [0.0.0.0/health](0.0.0.0/health))
+Client: [localhost](https://localhost)
 
-Mongo-Express: [0.0.0.0:8081](0.0.0.0:8081)
+Server: `localhost/server` (HealthCheck: [localhost/health](localhost/health))
+
+Mongo-Express: [0.0.0.0:8081](http://0.0.0.0:8081)
 
 To shutdown: `ctrl + c`
 
