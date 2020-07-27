@@ -1,3 +1,5 @@
+# This file is used by the Makefile to updates dependencies of our containers locally
+
 version: '2'
 
 services:

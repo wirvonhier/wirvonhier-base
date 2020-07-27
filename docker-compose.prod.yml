@@ -1,0 +1,130 @@
+version: '3.4'
+
+services:
+  server:
+    image: wirvonhier/server:latest
+    build: ./server
+    networks:
+      - server
+    logging: # TODO
+    secrets:
+      - mongo_user
+      - mongo_password
+      - sendgrid_api_key
+      - cloudinary_api_key
+      - cloudinary_api_secret
+      - vimeo_access_token
+      - google_maps_api_key
+    environment:
+        CLIENT_BASE_URL: https://app.wirvonhier.net
+        APP_DOMAIN: wirvonhier.net
+        NODE_ENV: production
+        PORT: 3000
+        MONGO_USER_FILE: /run/secrets/mongo_user
+        MONGO_PASSWORD_FILE: /run/secrets/mongo_password
+        MONGO_PATH: mongo:27017/wirvonhier
+        MONGO_AUTH_SOURCE: wirvonhier
+        SENDGRID_API_KEY_FILE: /run/secrets/sendgrid_api_key
+        CLOUDINARY_CLOUD_NAME: wirvonhier
+        CLOUDINARY_API_KEY_FILE: /run/secrets/cloudinary_api_key
+        CLOUDINARY_API_SECRET_FILE: /run/secrets/cloudinary_api_secret
+        VIMEO_ACCESS_TOKEN_FILE: /run/secrets/vimeo_access_token
+    deploy:
+      endpoint_mode: dnsrr
+      mode: "replicated"
+      resource:
+        limits:
+          memory: 4G
+
+  client:
+    image: wirvonhier/client:latest
+    build: ./client
+    networks:
+      - client
+    logging: # TODO
+    ports:
+      - 8080:8080
+    secrets:
+      - google_maps_api_key
+    environment:
+      API_URL: https://api.wirvonhier.net
+      CLOUDINARY_CLOUD_NAME: wirvonhier
+      IMAGE_UPLOAD_URL: https://api.cloudinary.com/v1_1/wirvonhier/image/upload
+      CLOUDINARY_IMAGE_PRESET: wirvonhier_image
+      GOOGLE_MAPS_API_KEY: /run/secrets/google_maps_api_key # SECRET
+    deploy:
+      endpoint_mode: dnsrr
+      mode: "replicated"
+      resource:
+        limits:
+          memory: 4G
+
+  proxy:
+    image: wirvonhier/proxy:latest
+    restart: always
+    networks:
+      - client
+      - server
+    command: "/bin/sh -c 'while :; do sleep 6h & wait $${!}; nginx -s reload; done & nginx -g \"daemon off;\"'"
+    logging: # TODO
+    volumes:
+      - /etc/letsencrypt:/etc/letsencrypt
+    ports:
+      - 80:80
+      - 443:443
+    depends_on:
+      - server
+    deploy:
+      endpoint_mode: dnsrr
+      mode: "replicated"
+      resource:
+        limits:
+          memory: 4G
+
+  mongo:
+    image: wirvonhier/mongo:latest
+    networks:
+      - server
+    logging: # TODO
+    secrets:
+      - mongo_initdb_root_username
+      - mongo_initdb_root_password
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: /run/secrets/mongo_initdb_root_username
+      MONGO_INITDB_ROOT_PASSWORD: /run/secrets/mongo_initdb_root_password
+      MONGO_INITDB_DATABASE: wirvonhier
+    volumes:
+      - mongodbdata:/data/db
+    deploy:
+      endpoint_mode: dnsrr
+      mode: "replicated"
+      resource:
+        limits:
+          memory: 4G
+
+volumes:
+  mongodbdata: # get this off this node? -> if multiple mongo nodes this is required
+
+networks:
+  client:
+  server:
+
+secrets:
+  mongo_initdb_root_username:
+    file: ./mongo/secrets/mongo_initdb_root_username
+  mongo_initdb_root_password:
+    file: ./mongo/secrets/mongo_initdb_root_password
+  mongo_user:
+    file: ./server/secrets/mongo_user
+  mongo_password:
+    file: ./server/secrets/mongo_password
+  sendgrid_api_key:
+    file: ./server/secrets/sendgrid_api_key
+  cloudinary_api_key:
+    file: ./server/secrets/cloudinary_api_key
+  cloudinary_api_secret:
+    file: ./server/secrets/cloudinary_api_secret
+  vimeo_access_token:
+    file: ./server/secrets/vimeo_access_token
+  google_maps_api_key:
+    file: ./client/secrets/google_maps_api_key
