@@ -36,7 +36,7 @@ services:
           memory: 4G
 
   client:
-    image: wirvonhier/client:test-1596906416
+    image: wirvonhier/client:test-1596916678
     build: ./client
     networks:
       - client
