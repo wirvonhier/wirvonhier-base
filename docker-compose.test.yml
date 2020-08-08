@@ -75,7 +75,6 @@ services:
     depends_on:
       - server
     deploy:
-      endpoint_mode: dnsrr
       mode: "replicated"
       resources:
         limits:
@@ -102,7 +101,6 @@ services:
     volumes:
       - mongodbdata:/data/db:cached
     deploy:
-      endpoint_mode: dnsrr
       mode: "replicated"
       resources:
         limits:
