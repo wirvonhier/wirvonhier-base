@@ -2,7 +2,7 @@ version: '3.4'
 
 services:
   server:
-    image: wirvonhier/server:test-
+    image: wirvonhier/server:test-1596892047
     build: ./server
     networks:
       - server
@@ -36,7 +36,7 @@ services:
           memory: 4G
 
   client:
-    image: wirvonhier/client:test-
+    image: wirvonhier/client:test-1596884959
     build: ./client
     networks:
       - client
@@ -57,7 +57,7 @@ services:
           memory: 4G
 
   proxy:
-    image: wirvonhier/proxy:test-
+    image: wirvonhier/proxy:test-1596897872
     restart: always
     networks:
       - client
@@ -82,7 +82,7 @@ services:
           memory: 4G
 
   mongo:
-    image: wirvonhier/mongo:test-
+    image: wirvonhier/mongo:test-1596896099
     networks:
       - server
     ports:
