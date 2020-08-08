@@ -60,13 +60,11 @@ jobs:
           echo "${{ secrets.TEST_CLIENT_SSL_PRIV_KEY }}" | docker secret create test_client_ssl_priv_key -
           echo "${{ secrets.TEST_CLIENT_SSL_PUB_KEY }}" | docker secret create test_client_ssl_pub_key -
 
-      - name: test
-        run: |
-          ls
-          cwd
+      - name: Create Compose file
+        run: docker-compose -f docker-compose.yml -f docker-compose.text.yml config -> output.yml
 
-      # - name: Create Compose file
-      #   run: docker-compose -f docker-compose.yml -f docker-compose.text.yml config -> output.yml
+      - name: test
+        run: cat output.yml && docker secrets ls
 
       # - name: Deploy Docker Stack
       #   run: docker stack deploy -c output.yml
