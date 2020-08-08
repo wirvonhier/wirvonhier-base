@@ -37,7 +37,7 @@ services:
   client:
     image: wirvonhier/client:test-1596916678
     networks:
-      - client
+      - clientnet
     # logging: # TODO
     secrets:
       - test_google_maps_api_key
@@ -58,7 +58,7 @@ services:
     image: wirvonhier/proxy:test-1596897872
     restart: always
     networks:
-      - client
+      - clientnet
       - server
     command: "/bin/sh -c 'while :; do sleep 6h & wait $${!}; nginx -s reload; done & nginx -g \"daemon off;\"'"
     # logging: # TODO
