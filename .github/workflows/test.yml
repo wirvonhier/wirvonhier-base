@@ -1,0 +1,76 @@
+name: Test - Delploy Stack on test.wirvonhier.net
+
+on:
+  push:
+    branches:
+      - test
+
+jobs:
+  secrets:
+
+
+  redeploy: # need to update secrets on server just to make sure they are up-to-date
+    runs-on: ubuntu-latest
+    # needs: docker
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Install Open SSH
+        run: sudo apt-get update && sudo apt-get install openssh-client
+
+      - name: SET ssh keys
+        run: |
+          mkdir "$HOME/.ssh"
+          printf '%s\n' "${{ secrets.SSH_PRIVATE_KEY }}a" > "$HOME/.ssh/id_rsa"
+          chmod 600 "$HOME/.ssh/id_rsa"
+          eval $(ssh-agent)
+          ssh-add "$HOME/.ssh/id_rsa"
+          printf '%s %s\n' "${{ secrets.DOCKER_HOST }}" "${{ secrets.SSH_SERVER_KEY }}" > "$HOME/.ssh/known_hosts"
+
+
+      - name: Set Docker Remote Context
+        run: |
+          docker context create wirvonhier --default-stack-orchestrator=swarm --docker "host=ssh://${{ secrets.DOCKER_HOST_USER }}@${{ secrets.DOCKER_HOST }}"
+          docker context use wirvonhier
+
+      - name: Update Docker Secrets
+        run: |
+          docker secret rm test_mongo_initdb_root_username || true
+          docker secret rm test_mongo_initdb_root_password || true
+          docker secret rm test_google_maps_api_key || true
+          docker secret rm test_mongo_user || true
+          docker secret rm test_mongo_password || true
+          docker secret rm test_sendgrid_api_key || true
+          docker secret rm test_cloudinary_api_key || true
+          docker secret rm test_cloudinary_api_secret || true
+          docker secret rm test_vimeo_access_token || true
+          docker secret rm test_client_ssl_pub_key || true
+          docker secret rm test_client_ssl_priv_key || true
+          docker secret rm test_server_ssl_pub_key || true
+          docker secret rm test_server_ssl_priv_key || true
+
+          echo "${{ secrets.TEST_MONGO_INITDB_ROOT_USERNAME }}" | docker secret create test_mongo_initdb_root_username -
+          echo "${{ secrets.TEST_MONGO_INITDB_ROOT_PASSWORD }}" | docker secret create test_mongo_initdb_root_password -
+          echo "${{ secrets.TEST_GOOGLE_MAPS_API_KEY }}" | docker secret create test_google_maps_api_key -
+          echo "${{ secrets.TEST_MONGO_USER }}" | docker secret create test_mongo_user -
+          echo "${{ secrets.TEST_MONGO_PASSWORD }}" | docker secret create test_mongo_password -
+          echo "${{ secrets.TEST_SENDGRID_API_KEY }}" | docker secret create test_sendgrid_api_key -
+          echo "${{ secrets.TEST_CLOUDINARY_API_KEY }}" | docker secret create test_cloudinary_api_key -
+          echo "${{ secrets.TEST_CLOUDINARY_API_SECRET }}" | docker secret create test_cloudinary_api_secret -
+          echo "${{ secrets.TEST_VIMEO_ACCESS_TOKEN }}" | docker secret create test_vimeo_access_token -
+          echo "${{ secrets.TEST_SERVER_SSL_PRIV_KEY }}" | docker secret create test_server_ssl_priv_key -
+          echo "${{ secrets.TEST_SERVER_SSL_PUB_KEY }}" | docker secret create test_server_ssl_pub_key -
+          echo "${{ secrets.TEST_CLIENT_SSL_PRIV_KEY }}" | docker secret create test_client_ssl_priv_key -
+          echo "${{ secrets.TEST_CLIENT_SSL_PUB_KEY }}" | docker secret create test_client_ssl_pub_key -
+
+      - name: test
+        run: |
+          ls
+          cwd
+
+      # - name: Create Compose file
+      #   run: docker-compose -f docker-compose.yml -f docker-compose.text.yml config -> output.yml
+
+      # - name: Deploy Docker Stack
+      #   run: docker stack deploy -c output.yml
+    

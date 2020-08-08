@@ -14,7 +14,6 @@ services:
       - cloudinary_api_key
       - cloudinary_api_secret
       - vimeo_access_token
-      - google_maps_api_key
     environment:
         CLIENT_BASE_URL: https://app.wirvonhier.net
         APP_DOMAIN: wirvonhier.net
@@ -89,9 +88,13 @@ services:
     secrets:
       - mongo_initdb_root_username
       - mongo_initdb_root_password
+      - mongo_user
+      - mongo_password
     environment:
       MONGO_INITDB_ROOT_USERNAME: /run/secrets/mongo_initdb_root_username
       MONGO_INITDB_ROOT_PASSWORD: /run/secrets/mongo_initdb_root_password
+      MONGO_USER_FILE: /run/secrets/mongo_user
+      MONGO_PASSWORD_FILE: /run/secrets/mongo_password
       MONGO_INITDB_DATABASE: wirvonhier
     volumes:
       - mongodbdata:/data/db
@@ -111,20 +114,28 @@ networks:
 
 secrets:
   mongo_initdb_root_username:
-    file: ./mongo/secrets/mongo_initdb_root_username
+    external: true
   mongo_initdb_root_password:
-    file: ./mongo/secrets/mongo_initdb_root_password
+    external: true
   mongo_user:
-    file: ./server/secrets/mongo_user
+    external: true
   mongo_password:
-    file: ./server/secrets/mongo_password
+    external: true
   sendgrid_api_key:
-    file: ./server/secrets/sendgrid_api_key
+    external: true
   cloudinary_api_key:
-    file: ./server/secrets/cloudinary_api_key
+    external: true
   cloudinary_api_secret:
-    file: ./server/secrets/cloudinary_api_secret
+    external: true
   vimeo_access_token:
-    file: ./server/secrets/vimeo_access_token
+    external: true
   google_maps_api_key:
-    file: ./client/secrets/google_maps_api_key
+    external: true
+  client_ssl_pub_key:
+    external: true
+  client_ssl_priv_key:
+    external: true
+  server_ssl_pub_key:
+    external: true
+  server_ssl_priv_key:
+    external: true
