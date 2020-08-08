@@ -12,7 +12,7 @@ services:
       - server_nodemodules:/home/node/app/node_modules
     entrypoint: bash /home/node/app/docker-entrypoint.sh
     networks:
-      - server
+      - servernet
     secrets:
       - mongo_user
       - mongo_password
@@ -45,7 +45,7 @@ services:
       - client_nodemodules:/home/node/app/node_modules
     entrypoint: bash /home/node/app/docker-entrypoint.sh
     networks:
-      - client
+      - clientnet
     secrets:
       - google_maps_api_key
     environment:
@@ -56,8 +56,7 @@ services:
       GOOGLE_MAPS_API_KEY_FILE: /run/secrets/google_maps_api_key
 
   proxy:
-    build: proxy
-    image: wirvonhier/proxy:test-1596894532
+    image: wirvonhier/proxy:test-1596926089
     restart: always
     secrets:
       - client_ssl_pub_key
@@ -72,8 +71,8 @@ services:
       - 8081:8081
       - 443:443
     networks:
-      - server
-      - client
+      - servernet
+      - clientnet
     depends_on:
       - server
       - client
@@ -82,7 +81,7 @@ services:
     image: wirvonhier/mongo:test-1596896099
     command: --quiet
     networks:
-      - server
+      - servernet
     secrets:
       - mongo_initdb_root_password
       - mongo_initdb_root_username
@@ -103,7 +102,7 @@ services:
     image: mongo-express
     restart: always
     networks:
-      - server
+      - servernet
     # ports:
     #   - 8081:8081
     environment:
@@ -120,8 +119,8 @@ volumes:
     external: true
 
 networks:
-  client:
-  server:
+  clientnet:
+  servernet:
 
 secrets:
   client_ssl_pub_key:

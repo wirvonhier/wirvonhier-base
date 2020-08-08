@@ -2,9 +2,9 @@ version: '3.4'
 
 services:
   server:
-    image: wirvonhier/server:test-1596892047
+    image: wirvonhier/server:test-1596926056
     networks:
-      - server
+      - servernet
     # logging: # TODO
     secrets:
       - test_mongo_user
@@ -35,18 +35,10 @@ services:
           memory: 4G
 
   client:
-    image: wirvonhier/client:test-1596916678
+    image: wirvonhier/client:test-1596924896
     networks:
       - clientnet
-    # logging: # TODO
-    secrets:
-      - test_google_maps_api_key
-    environment:
-      API_URL: https://testapi.wirvonhier.net
-      CLOUDINARY_CLOUD_NAME: wirvonhier
-      IMAGE_UPLOAD_URL: https://api.cloudinary.com/v1_1/wirvonhier/image/upload
-      CLOUDINARY_IMAGE_PRESET: wirvonhier_image
-      GOOGLE_MAPS_API_KEY_FILE: /run/secrets/test_google_maps_api_key
+    # logging: # TODO      
     deploy:
       endpoint_mode: dnsrr
       mode: "replicated"
@@ -55,11 +47,11 @@ services:
           memory: 4G
 
   proxy:
-    image: wirvonhier/proxy:test-1596897872
+    image: wirvonhier/proxy:test-1596926089
     restart: always
     networks:
       - clientnet
-      - server
+      - servernet
     command: "/bin/sh -c 'while :; do sleep 6h & wait $${!}; nginx -s reload; done & nginx -g \"daemon off;\"'"
     # logging: # TODO
     secrets:
@@ -81,7 +73,7 @@ services:
   mongo:
     image: wirvonhier/mongo:test-1596896099
     networks:
-      - server
+      - servernet
     ports:
       - 27018:27017
     # logging: # TODO
@@ -108,8 +100,8 @@ volumes:
   mongodbdata: # get this off this node? -> if multiple mongo nodes this is required
 
 networks:
-  client:
-  server:
+  clientnet:
+  servernet:
 
 secrets:
   test_mongo_initdb_root_username:

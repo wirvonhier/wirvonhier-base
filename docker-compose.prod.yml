@@ -2,7 +2,7 @@ version: '3.4'
 
 services:
   server:
-    image: wirvonhier/server:latest
+    image: wirvonhier/server:release-
     build: ./server
     networks:
       - server
@@ -36,7 +36,7 @@ services:
           memory: 4G
 
   client:
-    image: wirvonhier/client:latest
+    image: wirvonhier/client:release-
     build: ./client
     networks:
       - client
@@ -59,7 +59,7 @@ services:
           memory: 4G
 
   proxy:
-    image: wirvonhier/proxy:latest
+    image: wirvonhier/proxy:release-
     restart: always
     networks:
       - client
@@ -81,7 +81,7 @@ services:
           memory: 4G
 
   mongo:
-    image: wirvonhier/mongo:latest
+    image: wirvonhier/mongo:release-
     networks:
       - server
     logging: # TODO
