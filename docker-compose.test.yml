@@ -3,7 +3,6 @@ version: '3.4'
 services:
   server:
     image: wirvonhier/server:test-1596892047
-    build: ./server
     networks:
       - server
     # logging: # TODO
@@ -37,7 +36,6 @@ services:
 
   client:
     image: wirvonhier/client:test-1596916678
-    build: ./client
     networks:
       - client
     # logging: # TODO
