@@ -63,9 +63,6 @@ jobs:
       - name: Create Compose file
         run: docker-compose -f docker-compose.yml -f docker-compose.test.yml config > output.yml
 
-      - name: test
-        run: cat output.yml && docker secrets ls
-
-      # - name: Deploy Docker Stack
-      #   run: docker stack deploy -c output.yml
+      - name: Deploy Docker Stack
+        run: docker stack deploy -c output.yml
     
