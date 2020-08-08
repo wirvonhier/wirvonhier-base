@@ -64,5 +64,4 @@ jobs:
         run: docker-compose -f docker-compose.yml -f docker-compose.test.yml config > output.yml
 
       - name: Deploy Docker Stack
-        run: docker stack deploy -c output.yml
-    
+        run: docker stack deploy -c output.yml wvh_test
