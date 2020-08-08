@@ -32,6 +32,7 @@ jobs:
 
       - name: Update Docker Secrets
         run: |
+          docker stack rm wvh_test
           docker secret rm test_mongo_initdb_root_username || true
           docker secret rm test_mongo_initdb_root_password || true
           docker secret rm test_google_maps_api_key || true
