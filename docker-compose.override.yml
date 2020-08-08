@@ -56,7 +56,7 @@ services:
       GOOGLE_MAPS_API_KEY_FILE: /run/secrets/google_maps_api_key
 
   proxy:
-    image: wirvonhier/proxy:test-1596926089
+    image: wirvonhier/proxy:test-1596927683
     restart: always
     secrets:
       - client_ssl_pub_key

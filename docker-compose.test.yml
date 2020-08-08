@@ -2,7 +2,7 @@ version: '3.4'
 
 services:
   server:
-    image: wirvonhier/server:test-1596926056
+    image: wirvonhier/server:test-1596927674
     networks:
       - servernet
     # logging: # TODO
@@ -35,7 +35,7 @@ services:
           memory: 4G
 
   client:
-    image: wirvonhier/client:test-1596924896
+    image: wirvonhier/client:test-1596928004
     networks:
       - clientnet
     # logging: # TODO      
@@ -47,7 +47,7 @@ services:
           memory: 4G
 
   proxy:
-    image: wirvonhier/proxy:test-1596926089
+    image: wirvonhier/proxy:test-1596927683
     restart: always
     networks:
       - clientnet
