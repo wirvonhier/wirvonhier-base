@@ -2,7 +2,7 @@ version: '3.4'
 
 services:
   server:
-    image: wirvonhier/server:test-1596971971
+    image: wirvonhier/server:test-1596975188
     networks:
       - servernet
     # logging: # TODO
@@ -47,7 +47,7 @@ services:
           memory: 4G
 
   proxy:
-    image: wirvonhier/proxy:test-1596927683
+    image: wirvonhier/proxy:test-1596975164
     restart: always
     networks:
       - clientnet
@@ -71,7 +71,7 @@ services:
           memory: 4G
 
   mongo:
-    image: wirvonhier/mongo:test-1596972659
+    image: wirvonhier/mongo:test-1596975014
     networks:
       - servernet
     # ports:
