@@ -2,7 +2,7 @@ version: '3.4'
 
 services:
   server:
-    image: wirvonhier/server:test-1596982371
+    image: wirvonhier/server:test-1596983928
     networks:
       - servernet
     # logging: # TODO
@@ -71,7 +71,7 @@ services:
           memory: 4G
 
   mongo:
-    image: wirvonhier/mongo:test-1596982190
+    image: wirvonhier/mongo:test-1596983790
     networks:
       - servernet
     # ports:
