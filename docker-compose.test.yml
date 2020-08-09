@@ -2,7 +2,7 @@ version: '3.4'
 
 services:
   server:
-    image: wirvonhier/server:test-1596969358
+    image: wirvonhier/server:test-1596971971
     networks:
       - servernet
     # logging: # TODO
@@ -71,7 +71,7 @@ services:
           memory: 4G
 
   mongo:
-    image: wirvonhier/mongo:test-1596970958
+    image: wirvonhier/mongo:test-1596971914
     networks:
       - servernet
     ports:
@@ -89,7 +89,7 @@ services:
       MONGO_PASSWORD_FILE: /run/secrets/test_mongo_password
       MONGO_INITDB_DATABASE: wirvonhier
     volumes:
-      - mongodbdata:/data/db:cached
+      - mongodbdata:/data/db
     deploy:
       mode: "replicated"
       resources:
