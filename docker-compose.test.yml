@@ -2,7 +2,7 @@ version: '3.4'
 
 services:
   server:
-    image: wirvonhier/server:test-1596927674
+    image: wirvonhier/server:test-1596932049
     networks:
       - servernet
     # logging: # TODO
@@ -35,7 +35,7 @@ services:
           memory: 4G
 
   client:
-    image: wirvonhier/client:test-1596928004
+    image: wirvonhier/client:test-1596932195
     networks:
       - clientnet
     # logging: # TODO      
