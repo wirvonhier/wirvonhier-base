@@ -74,8 +74,8 @@ services:
     image: wirvonhier/mongo:test-1596972659
     networks:
       - servernet
-    ports:
-      - 27018:27017
+    # ports:
+    #   - 27018:27017
     # logging: # TODO
     secrets:
       - test_mongo_initdb_root_password
