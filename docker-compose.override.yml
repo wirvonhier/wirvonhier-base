@@ -56,7 +56,7 @@ services:
       GOOGLE_MAPS_API_KEY_FILE: /run/secrets/google_maps_api_key
 
   proxy:
-    image: wirvonhier/proxy:test-1596927683
+    image: wirvonhier/proxy:test-1596975164
     restart: always
     secrets:
       - client_ssl_pub_key
@@ -78,7 +78,7 @@ services:
       - client
 
   mongo:
-    image: wirvonhier/mongo:test-1596896099
+    image: wirvonhier/mongo:test-1596978230
     command: --quiet
     networks:
       - servernet
