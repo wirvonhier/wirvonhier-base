@@ -97,7 +97,7 @@ services:
           memory: 4G
 
 volumes:
-  mongodbdata: # get this off this node? -> if multiple mongo nodes this is required
+  mongodbdata:
 
 networks:
   clientnet:
