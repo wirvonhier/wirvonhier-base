@@ -2,7 +2,7 @@ version: '3.4'
 
 services:
   server:
-    image: wirvonhier/server:test-1596937039
+    image: wirvonhier/server:test-1596938056
     networks:
       - servernet
     # logging: # TODO
