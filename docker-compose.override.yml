@@ -78,7 +78,7 @@ services:
       - client
 
   mongo:
-    image: wirvonhier/mongo:test-1596978230
+    image: wirvonhier/mongo:test-1596982190
     command: --quiet
     networks:
       - servernet
