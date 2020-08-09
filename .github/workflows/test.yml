@@ -33,6 +33,7 @@ jobs:
       - name: Update Docker Secrets
         run: |
           docker stack rm wvh_test
+          until [ -z $(docker stack ps {{ wvh_test }} -q) ]; do sleep 1; done
           docker volume rm wvh_test_mongodbdata || true
           docker secret rm test_mongo_initdb_root_username || true
           docker secret rm test_mongo_initdb_root_password || true
