@@ -78,7 +78,7 @@ services:
       - client
 
   mongo:
-    image: wirvonhier/mongo:test-1596983790
+    image: wirvonhier/mongo:test-1597677316
     command: --quiet
     networks:
       - servernet
@@ -132,9 +132,9 @@ secrets:
   server_ssl_priv_key:
     file: ./proxy/localcerts/localhost-key.pem
   mongo_initdb_root_username:
-    file: ./mongo/secrets/mongo_initdb_root_password
-  mongo_initdb_root_password:
     file: ./mongo/secrets/mongo_initdb_root_username
+  mongo_initdb_root_password:
+    file: ./mongo/secrets/mongo_initdb_root_password
   mongo_user:
     file: ./server/secrets/mongo_user
   mongo_password:
