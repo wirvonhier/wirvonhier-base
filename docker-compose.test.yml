@@ -35,7 +35,7 @@ services:
           memory: 4G
 
   client:
-    image: wirvonhier/client:test-1596937176
+    image: wirvonhier/client:test-1597686493
     networks:
       - clientnet
     # logging: # TODO      
