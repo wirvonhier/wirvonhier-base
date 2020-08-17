@@ -24,7 +24,6 @@ jobs:
           ssh-add "$HOME/.ssh/id_rsa"
           printf '%s %s\n' "${{ secrets.DOCKER_HOST }}" "${{ secrets.SSH_SERVER_KEY }}" > "$HOME/.ssh/known_hosts"
 
-
       - name: Set Docker Remote Context
         run: |
           docker context create wirvonhier --default-stack-orchestrator=swarm --docker "host=ssh://${{ secrets.DOCKER_HOST_USER }}@${{ secrets.DOCKER_HOST }}"
@@ -33,7 +32,7 @@ jobs:
       - name: Update Docker Secrets
         run: |
           docker stack rm wvh_test
-          until [ -z $(docker stack ps {{ wvh_test }} -q) ]; do sleep 1; done
+          until [ -z "$(docker stack ps wvh_test -q)" ]; do sleep 1; done
           docker volume rm wvh_test_mongodbdata || true
           docker secret rm test_mongo_initdb_root_username || true
           docker secret rm test_mongo_initdb_root_password || true
