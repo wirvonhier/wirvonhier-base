@@ -71,7 +71,7 @@ services:
           memory: 4G
 
   mongo:
-    image: wirvonhier/mongo:test-1596983790
+    image: wirvonhier/mongo:test-1597677316
     networks:
       - servernet
     # ports:
