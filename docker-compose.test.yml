@@ -47,13 +47,12 @@ services:
           memory: 4G
 
   proxy:
-    image: wirvonhier/proxy:test-1596975164
+    image: wirvonhier/proxy:test-test-1599491523
     restart: always
     networks:
       - clientnet
       - servernet
     command: "/bin/sh -c 'while :; do sleep 6h & wait $${!}; nginx -s reload; done & nginx -g \"daemon off;\"'"
-    # logging: # TODO
     secrets:
       - test_client_ssl_pub_key
       - test_client_ssl_priv_key
@@ -71,12 +70,11 @@ services:
           memory: 4G
 
   mongo:
-    image: wirvonhier/mongo:test-1597677316
+    image: wirvonhier/mongo:test-1599490873
     networks:
       - servernet
-    # ports:
-    #   - 27018:27017
-    # logging: # TODO
+    ports:
+      - 27017:27017
     secrets:
       - test_mongo_initdb_root_password
       - test_mongo_initdb_root_username
