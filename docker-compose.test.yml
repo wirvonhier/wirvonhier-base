@@ -47,7 +47,7 @@ services:
           memory: 4G
 
   proxy:
-    image: wirvonhier/proxy:test-test-1599491523
+    image: wirvonhier/proxy:test-1599491523
     restart: always
     networks:
       - clientnet
